@@ -11,7 +11,7 @@ const reviewSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
     },
-    to : {  // recieved review from another people
+    to : {  
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
     }

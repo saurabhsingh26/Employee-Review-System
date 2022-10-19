@@ -4,12 +4,14 @@ const app = express();
 const db = require('./config/mongoose');
 const expressLayouts = require('express-ejs-layouts');
 
+//Authentication Using Passport js and session for cookie
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy')
 const passportGoogle = require('./config/passport-google-oauth2-strategy');
 const MongoStore = require('connect-mongo');
 
+// set flash message
 const flash = require('connect-flash');
 const customMWare = require('./config/middleware');
 
@@ -18,9 +20,11 @@ app.use(express.static('./assets'));
 
 app.use(expressLayouts);
 
+// extract style and scripts from sub pages into the layout
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true); 
 
+// set up the view engine
 app.set('view engine','ejs');
 app.set('views','./views');
 

@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
             ref : 'User',
         }
     ],
-    from : [    // recieved review from another people
+    from : [    
         {
             type : mongoose.Schema.Types.ObjectId,
             ref : 'Review',

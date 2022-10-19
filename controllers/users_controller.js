@@ -3,38 +3,40 @@ const User = require('../models/users');
 const Review = require('../models/review');
 
 
-module.exports.create = async function(req, res){
 
-    try {
+module.exports.create = function(req,res){
+    if(req.body.password != req.body.confirm_password){
+        req.flash('error','Incorrect Password')
+        return res.redirect('back')
+    }
 
-        if(req.body.password != req.body.confirm_password){
-            req.flash('error','Password did not');
-            return res.redirect('/users/sign-up');
+    User.findOne({email: req.body.email},function(err,user){
+        if(err){
+            console.log("error in finding user in signing up");
+            return;
         }
-
-        let user = await User.findOne({ email : req.body.email });
-
-        if(user){
-            req.flash('error','User already exists');
-            return res.redirect('/users/sign-in');
-        }else{
-            await User.create({
+        // console.log('find one -> ',user)
+        
+        if(!user){
+            User.create({
                 name : req.body.name,
                 email : req.body.email,
                 isAdmin : false,
                 password : req.body.password
-            });
-            
-            req.flash('success','Logged In Successfully');
-            
-            return res.redirect('/');
+            },function(err,user){
+                if(err){
+                    console.log("error in creating user while signing up");
+                    return;
+                }
+                // console.log('create -> ',user)
+                req.flash('success','Sign Up Successfull')
+                return res.redirect('/')
+            })
+        }else{
+            // console.log(user);
+            return res.redirect('back');
         }
-    
-    } catch (error) {
-        console.log('error while creating user', error);
-        return res.redirect('/users/sign-up');
-    }
-    
+    })
 }
 
 
